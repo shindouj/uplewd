@@ -6,7 +6,6 @@ plugins {
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
-    id("org.sonarqube") version "3.0"
 }
 
 group = "net.jeikobu"
@@ -18,18 +17,6 @@ val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
 repositories {
     mavenCentral()
-}
-
-sonarqube {
-    if (branchName != null) {
-        properties {
-            property("sonar.projectKey", "shindouj_uplewd")
-            property("sonar.organization", "shindouj")
-            property("sonar.host.url", "https://sonarcloud.io")
-            property("sonar.branch.name", branchName)
-            property("sonar.coverage.jacoco.xmlReportPaths", "$projectDir/build/reports/jacoco/test/jacocoTestReport.xml")
-        }
-    }
 }
 
 tasks.getByName<BootBuildImage>("bootBuildImage") {
