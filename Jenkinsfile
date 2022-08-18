@@ -17,12 +17,6 @@ pipeline {
             }
         }
 
-        stage('SonarQube Scan') {
-            steps {
-                sh './gradlew sonarqube'
-            }
-        }
-
         stage('Build & Deploy Docker Image') {
             when {
                 allOf {
