@@ -1,18 +1,62 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     id("org.springframework.boot") version "2.7.3"
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "net.jeikobu"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+val branchName: String? = System.getenv("BRANCH_NAME")
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+
 repositories {
     mavenCentral()
+}
+
+sonarqube {
+    if (branchName != null) {
+        properties {
+            property("sonar.projectKey", "shindouj_uplewd")
+            property("sonar.organization", "shindouj")
+            property("sonar.host.url", "https://sonarcloud.io")
+            property("sonar.branch.name", branchName)
+            property("sonar.coverage.jacoco.xmlReportPaths", "$projectDir/build/reports/jacoco/test/jacocoTestReport.xml")
+        }
+    }
+}
+
+tasks.getByName<BootBuildImage>("bootBuildImage") {
+    when (branchName) {
+        "master" -> {
+            imageName = "docker.jeikobu.net/shindouj/uplewd:latest"
+            isPublish = true
+        }
+        "develop" -> {
+            imageName = "docker.jeikobu.net/shindouj/uplewd:snapshot"
+            isPublish = true
+        }
+        else -> {
+            imageName = "shindouj/uplewd:dev_build"
+            isPublish = false
+        }
+    }
+
+    if (branchName != null) {
+        docker {
+            publishRegistry {
+                username = System.getenv("DOCKER_REGISTRY_USER")
+                password = System.getenv("DOCKER_REGISTRY_PASS")
+                url = "https://docker.jeikobu.net/v2/"
+            }
+        }
+    }
 }
 
 dependencies {
