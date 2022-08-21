@@ -12,6 +12,8 @@ services:
       - UPLEWD_MONGODB_PORT=27017
       - UPLEWD_MONGODB_USER=mongo
       - UPLEWD_MONGODB_PASS=4kCAaX9cg4ChaPLhbNMS
+      - UPLEWD_INSTANCE_NAME=Uplewd Dev
+      - UPLEWD_GLOBAL_UPLOAD_LIMIT=250
   db:
     image: mongo
     environment:
