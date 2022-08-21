@@ -47,6 +47,8 @@ tasks.getByName<BootBuildImage>("bootBuildImage") {
 }
 
 dependencies {
+    implementation("com.michael-bull.kotlin-retry:kotlin-retry:1.0.9")
+
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")

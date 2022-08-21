@@ -44,10 +44,12 @@ class SecurityConfig @Autowired constructor(
         http {
             authorizeRequests {
                 authorize("/admin/**", hasRole(Role.ADMIN.roleName))
+                authorize("/delete/**", anonymous)
                 authorize(anyRequest, authenticated)
             }
             formLogin { }
             httpBasic { }
+            csrf { disable() } //TODO: remove this and create proper fix - gives 403 on file upload without it
         }
         return http.build()
     }
