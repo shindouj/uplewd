@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      host: ${UPLEWD_MONGODB_HOST}
+      port: ${UPLEWD_MONGODB_PORT}
+      username: ${UPLEWD_MONGODB_USER}
+      password: ${UPLEWD_MONGODB_PASS}
+      database: admin
+      auto-index-creation: true

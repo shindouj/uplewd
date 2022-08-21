@@ -1,0 +1,32 @@
+services:
+  uplewd:
+    image: shindouj/uplewd:dev_build
+    links:
+      - "db:mongo"
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      - _JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      - UPLEWD_MONGODB_HOST=mongo
+      - UPLEWD_MONGODB_PORT=27017
+      - UPLEWD_MONGODB_USER=mongo
+      - UPLEWD_MONGODB_PASS=4kCAaX9cg4ChaPLhbNMS
+      - UPLEWD_INSTANCE_NAME=Uplewd Dev
+      - UPLEWD_GLOBAL_UPLOAD_LIMIT=250
+  db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=4kCAaX9cg4ChaPLhbNMS
+  mongo-express:
+    image: mongo-express
+    links:
+      - "db:mongo"
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 4kCAaX9cg4ChaPLhbNMS
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:4kCAaX9cg4ChaPLhbNMS@mongo:27017/
