@@ -49,8 +49,8 @@ class SecurityConfig @Autowired constructor(
             }
             formLogin { }
             httpBasic { }
-            csrf { disable() } //TODO: remove this and create proper fix - gives 403 on file upload without it
         }
+        
         return http.build()
     }
 

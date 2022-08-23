@@ -40,7 +40,7 @@
                                 <h1 class="text-uppercase fw-bold text-white mb-3">UPLOAD YOUR FILES HERE</h1>
                                 <p class="mb-4" th:text="'Maximum of ' + ${MAX_UPLOAD}"></p>
 
-                                <form action="/upload" method="post" enctype="multipart/form-data">
+                                <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
                                     <input class="form-control" type="file" name="file" id="formFile">
                                     <button class="btn btn-light fs-5 py-2 px-4" type="submit">Upload</button>
                                 </form>
