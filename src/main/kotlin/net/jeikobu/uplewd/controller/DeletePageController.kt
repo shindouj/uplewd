@@ -25,6 +25,8 @@ class DeletePageController(val fileRepository: FileRepository, val deleteFileSer
             deleted = true
             deletionTime = Instant.now()
         }
+
+        fileRepository.save(file)
     }
 
 }

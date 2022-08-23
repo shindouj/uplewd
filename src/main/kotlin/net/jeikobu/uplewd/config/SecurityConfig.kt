@@ -43,9 +43,9 @@ class SecurityConfig @Autowired constructor(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeRequests {
+                authorize(anyRequest, authenticated)
                 authorize("/admin/**", hasRole(Role.ADMIN.roleName))
                 authorize("/delete/**", anonymous)
-                authorize(anyRequest, authenticated)
             }
             formLogin { }
             httpBasic { }
