@@ -14,7 +14,7 @@ class DeletePageController(val fileRepository: FileRepository, val deleteFileSer
 
     @GetMapping("/delete/{deleteId}")
     fun deleteHandler(@PathVariable("deleteId") deleteId: String) {
-        val file = fileRepository.findFileByDeleteId(deleteId)
+        val file = fileRepository.findFileByDeleteIdAndDeletedIsFalse(deleteId)
             ?: throw UploadedFileNotFoundException("File with deletion ID [$deleteId] not found.")
 
         if (!deleteFileService.deleteFile(file.fileName)) {

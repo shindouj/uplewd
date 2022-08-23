@@ -9,4 +9,5 @@ interface FileRepository : MongoRepository<File, String> {
     //TODO: check if returns null or empty list
     fun findFilesByOwnerName(owner: String): List<File>?
     fun findFileByDeleteId(deleteId: String): File?
+    fun findFileByDeleteIdAndDeletedIsFalse(deleteId: String): File?
 }
