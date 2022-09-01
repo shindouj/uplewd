@@ -14,7 +14,7 @@ class Config {
     @Bean
     fun multipartResolver(): MultipartResolver {
         return CommonsMultipartResolver().apply {
-            setMaxUploadSize(maxFileSizeMB * 1024)
+            setMaxUploadSize(maxFileSizeMB * 1024 * 1024)
         }
     }
 }

@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body style="/*background: url(&quot;design.jpg&quot;);*/background-position: 0 -60px;">
@@ -40,9 +43,16 @@
                                 <h1 class="text-uppercase fw-bold text-white mb-3">UPLOAD YOUR FILES HERE</h1>
                                 <p class="mb-4" th:text="'Maximum of ' + ${MAX_UPLOAD}"></p>
 
-                                <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-                                    <input class="form-control" type="file" name="file" id="formFile">
-                                    <button class="btn btn-light fs-5 py-2 px-4" type="submit">Upload</button>
+<!--                                <form th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
+<!--                                    <input class="form-control" type="file" name="file" id="formFile">-->
+<!--                                    <button class="btn btn-light fs-5 py-2 px-4" type="submit">Upload</button>-->
+<!--                                </form>-->
+
+                                <form th:action="@{/upload}" method="post" enctype="multipart/form-data" id="fileForm">
+                                    <div class="input-group">
+                                        <input class="form-control" type="file" multiple style="color: var(--bs-dark);" id="fileSelection">
+                                        <button class="btn btn-light" type="submit">Upload</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -69,6 +79,8 @@
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/bold-and-dark.js"></script>
+<script src="/assets/js/uploader.js"></script>
+
 </body>
 
 </html>
