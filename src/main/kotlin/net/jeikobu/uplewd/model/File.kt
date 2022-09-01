@@ -7,6 +7,7 @@ data class File(
     @Id
     val id: String,
     val fileName: String,
+    val originalFileName: String,
     val ownerName: String,
     val uploadDate: Instant = Instant.now(),
     val deleteId: String,

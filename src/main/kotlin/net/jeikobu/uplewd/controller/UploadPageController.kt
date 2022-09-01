@@ -45,6 +45,7 @@ class UploadPageController @Autowired constructor(
             File(
                 id = savedFileNameWithoutExtension,
                 fileName = savedFileName,
+                originalFileName = file.originalFilename ?: "",
                 ownerName = user.username,
                 deleteId = deleteIdGenerator.generateDeleteId()
             )
