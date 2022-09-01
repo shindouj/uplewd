@@ -17,12 +17,13 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.multipart.MultipartResolver
+import org.springframework.web.multipart.commons.CommonsMultipartResolver
 
 @EnableWebSecurity
 class SecurityConfig @Autowired constructor(
     val userDetailsService: UplewdUserDetailsService
 ) {
-
     @Bean
     fun userDetailsService(): UserDetailsService {
         return userDetailsService
