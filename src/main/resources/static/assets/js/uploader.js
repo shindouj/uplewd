@@ -99,5 +99,3 @@ function uploadFile(file) {
     request.setRequestHeader(header, token);
     request.send(formData);
 }
-
-debugBox.innerHTML += "<br>Attached<br>";
