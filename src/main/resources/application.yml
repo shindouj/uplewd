@@ -7,3 +7,10 @@ spring:
       password: ${UPLEWD_MONGODB_PASS}
       database: admin
       auto-index-creation: true
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+server:
+  tomcat:
+    max-swallow-size: -1

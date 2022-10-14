@@ -1,6 +1,10 @@
+volumes:
+  upload_volume:
+
 services:
   uplewd:
     image: shindouj/uplewd:dev_build
+    user: "0"
     links:
       - "db:mongo"
     ports:
@@ -14,6 +18,12 @@ services:
       - UPLEWD_MONGODB_PASS=4kCAaX9cg4ChaPLhbNMS
       - UPLEWD_INSTANCE_NAME=Uplewd Dev
       - UPLEWD_GLOBAL_UPLOAD_LIMIT=250
+      - UPLEWD_STORAGE_PATH=/upload
+      - UPLEWD_STORAGE_FILENAME_MAX_LENGTH=16
+      - UPLEWD_DELETE_ID_MAX_LENGTH=64
+      - UPLEWD_HOST=127.0.0.1:8080
+    volumes:
+      - upload_volume:/upload:Z
   db:
     image: mongo
     environment:
