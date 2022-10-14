@@ -26,7 +26,6 @@ class DeletePageController(val fileRepository: FileRepository, val deleteFileSer
         }
         Logger.info { "Delete: File deleted from filesystem [fileName: ${file.fileName}, deleteId: $deleteId]" }
 
-
         file.apply {
             deleted = true
             deletionTime = Instant.now()
