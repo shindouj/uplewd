@@ -5,4 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository
 
 interface UserRepository : MongoRepository<User, String> {
     fun findUserByUsername(username: String): User?
+    fun findUserByToken(token: String): User?
 }

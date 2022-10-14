@@ -12,9 +12,12 @@ class User constructor(
     var passwordExpired: Boolean = false,
     var expired: Boolean = false,
     var locked: Boolean = false,
-): UserDetails {
-    constructor() : this(username = "", password = "", roles = mutableListOf(),
-        passwordExpired = false, expired = false, locked = false)
+    var token: String
+) : UserDetails {
+    constructor() : this(
+        username = "", password = "", roles = mutableListOf(),
+        passwordExpired = false, expired = false, locked = false, token = ""
+    )
 
     override fun getAuthorities(): Collection<GrantedAuthority> = roles.map {
         GrantedAuthority { "ROLE_${it.roleName}" }
