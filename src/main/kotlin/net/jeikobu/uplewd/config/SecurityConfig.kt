@@ -8,6 +8,7 @@ import net.jeikobu.uplewd.security.TokenFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -21,6 +22,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.csrf.CsrfFilter
+import org.springframework.security.web.util.matcher.AndRequestMatcher
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher
+import org.springframework.security.web.util.matcher.OrRequestMatcher
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
 import org.springframework.web.multipart.MultipartResolver
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
 
@@ -59,7 +65,14 @@ class SecurityConfig @Autowired constructor(
             }
             formLogin { }
             httpBasic { }
-            csrf { disable() } //TODO: discuss requirement of CSRF with REST API? good for web, bad for bg tasks
+            csrf {
+                requireCsrfProtectionMatcher = OrRequestMatcher(
+                    CsrfFilter.DEFAULT_CSRF_MATCHER,
+                    NegatedRequestMatcher(
+                        RequestHeaderRequestMatcher(HttpHeaders.AUTHORIZATION)
+                    )
+                )
+            } //TODO: remove session id cookie on rest api calls
         }
 
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter::class.java)
