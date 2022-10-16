@@ -70,7 +70,7 @@ class SecurityConfig @Autowired constructor(
             csrf {
                 requireCsrfProtectionMatcher = NegatedRequestMatcher(
                     OrRequestMatcher(
-                        RequestHeaderRequestMatcher(HttpHeaders.AUTHORIZATION),
+                        BearerAuthorizationMatcher(),
                         NegatedRequestMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER)
                     )
                 )
