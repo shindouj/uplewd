@@ -4,6 +4,7 @@ import net.jeikobu.uplewd.component.UplewdUserDetailsService
 import net.jeikobu.uplewd.db.UserRepository
 import net.jeikobu.uplewd.model.Role
 import net.jeikobu.uplewd.model.User
+import net.jeikobu.uplewd.security.BearerAuthorizationMatcher
 import net.jeikobu.uplewd.security.TokenFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
@@ -27,6 +28,7 @@ import org.springframework.security.web.util.matcher.AndRequestMatcher
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
+import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.multipart.MultipartResolver
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
 
@@ -66,15 +68,15 @@ class SecurityConfig @Autowired constructor(
             formLogin { }
             httpBasic { }
             csrf {
-                requireCsrfProtectionMatcher = OrRequestMatcher(
-                    CsrfFilter.DEFAULT_CSRF_MATCHER,
-                    NegatedRequestMatcher(
-                        RequestHeaderRequestMatcher(HttpHeaders.AUTHORIZATION)
+                requireCsrfProtectionMatcher = NegatedRequestMatcher(
+                    OrRequestMatcher(
+                        RequestHeaderRequestMatcher(HttpHeaders.AUTHORIZATION),
+                        NegatedRequestMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER)
                     )
                 )
             } //TODO: remove session id cookie on rest api calls
         }
-
+        CsrfFilter.DEFAULT_CSRF_MATCHER
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }

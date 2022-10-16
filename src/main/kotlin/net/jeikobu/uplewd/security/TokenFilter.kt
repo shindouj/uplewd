@@ -40,6 +40,7 @@ class TokenFilter @Autowired constructor(
 
         SecurityContextHolder.getContext().authentication = auth
 
+
         filterChain.doFilter(request, response)
     }
 
