@@ -18,17 +18,27 @@ class TokenFilter @Autowired constructor(
     private val userRepository: UserRepository
 ) : OncePerRequestFilter() {
 
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        val header = request.getHeader(HttpHeaders.AUTHORIZATION)
+
+        if (header.isNullOrEmpty() || !header.startsWith("Bearer")) {
+            return true
+        }
+
+        val splitHeader = header.split(" ")
+        if (splitHeader.count() < 2 || splitHeader[1].isEmpty()) {
+            return true
+        }
+
+        return false
+    }
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = getTokenFromHeader(request.getHeader(HttpHeaders.AUTHORIZATION))
-        if (token.isEmpty()) {
-            filterChain.doFilter(request, response)
-            return
-        }
-
+        val token = request.getHeader(HttpHeaders.AUTHORIZATION).split(" ")[1]
         val user: User? = userRepository.findUserByToken(token)
         if (user == null) {
             response.status = HttpServletResponse.SC_UNAUTHORIZED
@@ -40,20 +50,6 @@ class TokenFilter @Autowired constructor(
         }
 
         SecurityContextHolder.getContext().authentication = auth
-
         filterChain.doFilter(request, response)
-    }
-
-    private fun getTokenFromHeader(header: String?): String {
-        if (header.isNullOrEmpty() || !header.startsWith("Bearer")) {
-            return ""
-        }
-
-        val splitHeader = header.split(" ")
-        if (splitHeader.count() < 2 || splitHeader[1].isEmpty()) {
-            return ""
-        }
-
-        return splitHeader[1]
     }
 }
