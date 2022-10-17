@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetails
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -30,7 +31,7 @@ class TokenFilter @Autowired constructor(
 
         val user: User? = userRepository.findUserByToken(token)
         if (user == null) {
-            filterChain.doFilter(request, response)
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
             return
         }
 
@@ -39,7 +40,6 @@ class TokenFilter @Autowired constructor(
         }
 
         SecurityContextHolder.getContext().authentication = auth
-
 
         filterChain.doFilter(request, response)
     }
