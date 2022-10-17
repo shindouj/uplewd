@@ -65,7 +65,7 @@ class SecurityConfig @Autowired constructor(
                         NegatedRequestMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER)
                     )
                 )
-            } //TODO: remove session id cookie on rest api calls
+            }
         }
         CsrfFilter.DEFAULT_CSRF_MATCHER
         http.addFilterBefore(bearerTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
