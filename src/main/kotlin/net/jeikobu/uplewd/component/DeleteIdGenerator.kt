@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
-class DeleteIdGenerator(val idUtils: IdUtils, val fileRepository: FileRepository) {
+class DeleteIdGenerator(private val idUtils: IdUtils, private val fileRepository: FileRepository) {
 
     @Value("\${UPLEWD_DELETE_ID_MAX_LENGTH:64}")
     val deleteIdMaxLength: Int = 64
@@ -23,7 +23,7 @@ class DeleteIdGenerator(val idUtils: IdUtils, val fileRepository: FileRepository
         return id
     }
 
-    fun generateDeleteId() : String {
+    fun generateDeleteId(): String {
         return runBlocking {
             retry(limitAttempts(3)) {
                 tryGeneratingDeleteId(length = deleteIdMaxLength)

@@ -12,6 +12,7 @@ class User constructor(
     var passwordExpired: Boolean = false,
     var expired: Boolean = false,
     var locked: Boolean = false,
+    @Indexed
     var token: String
 ) : UserDetails {
     constructor() : this(

@@ -11,7 +11,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 @Component
-class NameGenerator(val idUtils: IdUtils, val fileRepository: FileRepository) {
+class NameGenerator(private val idUtils: IdUtils, private val fileRepository: FileRepository) {
 
     @Value("\${UPLEWD_STORAGE_FILENAME_MAX_LENGTH:16}")
     val filenameMaxLength: Int = 16
