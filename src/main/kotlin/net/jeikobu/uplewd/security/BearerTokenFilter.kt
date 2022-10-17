@@ -1,6 +1,5 @@
 package net.jeikobu.uplewd.security
 
-import net.jeikobu.uplewd.component.UplewdUserDetailsService
 import net.jeikobu.uplewd.db.UserRepository
 import net.jeikobu.uplewd.model.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,13 +7,12 @@ import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetails
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class TokenFilter @Autowired constructor(
+class BearerTokenFilter @Autowired constructor(
     private val userRepository: UserRepository
 ) : OncePerRequestFilter() {
 

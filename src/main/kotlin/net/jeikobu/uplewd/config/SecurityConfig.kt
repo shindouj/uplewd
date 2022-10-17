@@ -5,32 +5,23 @@ import net.jeikobu.uplewd.db.UserRepository
 import net.jeikobu.uplewd.model.Role
 import net.jeikobu.uplewd.model.User
 import net.jeikobu.uplewd.security.BearerAuthorizationMatcher
-import net.jeikobu.uplewd.security.TokenFilter
+import net.jeikobu.uplewd.security.BearerTokenFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.config.web.servlet.invoke
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CsrfFilter
-import org.springframework.security.web.util.matcher.AndRequestMatcher
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
-import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
-import org.springframework.security.web.util.matcher.RequestMatcher
-import org.springframework.web.multipart.MultipartResolver
-import org.springframework.web.multipart.commons.CommonsMultipartResolver
 
 @EnableWebSecurity
 class SecurityConfig @Autowired constructor(
@@ -53,12 +44,12 @@ class SecurityConfig @Autowired constructor(
     }
 
     @Bean
-    fun getTokenFilter(userRepository: UserRepository): TokenFilter {
-        return TokenFilter(userRepository)
+    fun getTokenFilter(userRepository: UserRepository): BearerTokenFilter {
+        return BearerTokenFilter(userRepository)
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity, tokenFilter: TokenFilter): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity, bearerTokenFilter: BearerTokenFilter): SecurityFilterChain {
         http {
             authorizeRequests {
                 authorize("/delete/**", permitAll)
@@ -77,7 +68,7 @@ class SecurityConfig @Autowired constructor(
             } //TODO: remove session id cookie on rest api calls
         }
         CsrfFilter.DEFAULT_CSRF_MATCHER
-        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(bearerTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 
