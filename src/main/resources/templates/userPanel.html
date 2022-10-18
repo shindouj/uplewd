@@ -36,6 +36,7 @@
     <div class="container py-4 py-lg-5">
         <section class="py-4 py-xl-5">
             <div class="container h-100">
+
                 <div class="text-white bg-primary border rounded border-0 p-4 py-5 mb-2">
                     <div class="row h-100">
                         <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
@@ -46,14 +47,16 @@
                         </div>
                     </div>
                 </div>
-                <div id="uploadedList" th:each="file : ${USER_FILES}">
 
+                <div id="uploadedList" th:each="file : ${USER_FILES}">
                     <div class="card bg-light p-0 h-100 shadow-sm mb-2">
                         <div class="row h-100 g-0 rounded flex-nowrap">
                             <div class="col p-3 py-4 text-info">
                                 <div class="d-flex flex-row">
-                                    <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">File name:</h6>
-                                    <h6 class="text-primary text-truncate fileName" style="--bs-text-opacity: .5;">[[${file.fileName}]]</h6>
+                                    <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">File
+                                        name:</h6>
+                                    <h6 class="text-primary text-truncate fileName" style="--bs-text-opacity: .5;">
+                                        [[${file.fileName}]]</h6>
                                 </div>
                                 <div class="fileLinks">
                                     <div class="d-flex flex-row">
@@ -63,9 +66,11 @@
                                         </h6>
                                     </div>
                                     <div class="d-flex flex-row">
-                                        <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">Deletion URL: </h6>
+                                        <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">
+                                            Deletion URL: </h6>
                                         <h6 class="text-primary text-truncate">
-                                            <a class="fileDUrl" th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">[[${HOST}]]/delete/[[${file.deleteId}]]</a>
+                                            <a class="fileDUrl"
+                                               th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">[[${HOST}]]/delete/[[${file.deleteId}]]</a>
                                         </h6>
                                     </div>
                                 </div>
@@ -79,8 +84,40 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+                <div>
+                    <nav aria-label="Pagination" th:if="${USER_FILES.totalPages gt 0}">
+                        <ul class="pagination justify-content-center font-weight-bold">
+                            <li class="page-item" th:classappend="${USER_FILES.number eq 0} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/userPanel?page={id}(id=${USER_FILES.number lt 2 ? 1 : USER_FILES.number})}"
+                                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:classappend="${i eq USER_FILES.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, USER_FILES.totalPages, 1)}">
+                                <a class="page-link" th:href="@{/userPanel?page={id}(id=${i})}" th:text="${i}"
+                                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                            </li>
+                            <li class="page-item disabled" th:if="${USER_FILES.number + 10 < USER_FILES.totalPages}">
+                                <a class="page-link svg-icon" href="#">
+                                    <span data-feather="more-horizontal" width="20" height="20"></span>
+                                </a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${USER_FILES.number + 1 eq USER_FILES.totalPages} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/userPanel?page={id}(id=${USER_FILES.number + 2})}"
+                                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
             </div>
         </section>
         <hr>
