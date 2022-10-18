@@ -48,40 +48,39 @@
                     </div>
                 </div>
 
-                <div id="uploadedList" th:each="file : ${USER_FILES}">
-                    <div class="card bg-light p-0 h-100 shadow-sm mb-2">
-                        <div class="row h-100 g-0 rounded flex-nowrap">
-                            <div class="col p-3 py-4 text-info">
+                <div class="card bg-light p-0 h-100 shadow-sm mb-2" th:each="file : ${USER_FILES}">
+                    <div class="row h-100 g-0 rounded flex-nowrap">
+                        <div class="col p-3 py-4 text-info">
+                            <div class="d-flex flex-row">
+                                <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">File
+                                    name:</h6>
+                                <h6 class="text-primary text-truncate fileName" style="--bs-text-opacity: .5;">
+                                    [[${file.fileName}]]</h6>
+                            </div>
+                            <div class="fileLinks">
                                 <div class="d-flex flex-row">
-                                    <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">File
-                                        name:</h6>
-                                    <h6 class="text-primary text-truncate fileName" style="--bs-text-opacity: .5;">
-                                        [[${file.fileName}]]</h6>
+                                    <h6 class="text-primary text-uppercase" style="margin-right: 8px">URL:</h6>
+                                    <h6 class="text-primary text-truncate">
+                                        <a class="fileUrl"
+                                           th:href="${file.fileName}">[[${HOST}]]/[[${file.fileName}]]</a>
+                                    </h6>
                                 </div>
-                                <div class="fileLinks">
-                                    <div class="d-flex flex-row">
-                                        <h6 class="text-primary text-uppercase" style="margin-right: 8px">URL:</h6>
-                                        <h6 class="text-primary text-truncate">
-                                            <a class="fileUrl" th:href="${file.fileName}">[[${HOST}]]/[[${file.fileName}]]</a>
-                                        </h6>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">
-                                            Deletion URL: </h6>
-                                        <h6 class="text-primary text-truncate">
-                                            <a class="fileDUrl"
-                                               th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">[[${HOST}]]/delete/[[${file.deleteId}]]</a>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex flex-row">
+                                    <h6 class="text-primary text-truncate text-uppercase" style="margin-right: 8px">
+                                        Deletion URL: </h6>
+                                    <h6 class="text-primary text-truncate">
+                                        <a class="fileDUrl"
+                                           th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">[[${HOST}]]/delete/[[${file.deleteId}]]</a>
+                                    </h6>
                                 </div>
                             </div>
-                            <div class="col-auto d-flex rounded-end">
-                                <h1 class="mb-0 mx-auto align-self-center">
-                                    <a href="#" title="View details" class="nav-link text-info pb-0">
-                                        <span class="d-inline-block lnr lnr-cart"></span>
-                                    </a>
-                                </h1>
-                            </div>
+                        </div>
+                        <div class="col-auto d-flex rounded-end">
+                            <h1 class="mb-0 mx-auto align-self-center">
+                                <a href="#" title="View details" class="nav-link text-info pb-0">
+                                    <span class="d-inline-block lnr lnr-cart"></span>
+                                </a>
+                            </h1>
                         </div>
                     </div>
                 </div>
