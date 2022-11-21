@@ -82,14 +82,14 @@
                             <td>
                                 <a target="_blank" class="fileUrl" th:href="${file.fileName}">
                                     <!--                                    [[${HOST}]]/[[${file.fileName}]]-->
-                                    <i class="material-icons">download</i>
+                                    <i class="bi bi-download"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a target="_blank" class="fileDUrl"
+                                <a target="_blank" class="fileDUrl text-danger"
                                    th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">
                                     <!--                                    [[${HOST}]]/delete/[[${file.deleteId}]]-->
-                                    <i class="material-icons text-danger">delete</i>
+                                    <i class="bi bi-trash"></i>
                                 </a>
                             </td>
                         </tr>
