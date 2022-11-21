@@ -1,12 +1,10 @@
 const refreshTokenButton = document.getElementById("refreshTokenButton");
 const tokenParagraph = document.getElementById("userTokenParagraph");
-
 const copyTokenButton = document.getElementById("copyTokenButton");
 
-refreshTokenButton.addEventListener("click", function (event) {
+refreshTokenButton.addEventListener("click", function () {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
     let url = window.location.origin + "/userPanel/refreshToken";
 
     let request = new XMLHttpRequest();
@@ -17,7 +15,7 @@ refreshTokenButton.addEventListener("click", function (event) {
         }
     };
 
-    request.addEventListener("error", function (ev) {
+    request.addEventListener("error", function () {
         alert(`error: ${request.responseText}`);
     });
 
@@ -26,6 +24,6 @@ refreshTokenButton.addEventListener("click", function (event) {
     request.send();
 });
 
-copyTokenButton.addEventListener("click", function (event) {
+copyTokenButton.addEventListener("click", function () {
     navigator.clipboard.writeText(tokenParagraph.innerText);
 })

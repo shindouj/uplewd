@@ -6,7 +6,6 @@ if (!String.prototype.format) {
     };
 }
 
-const debugBox = document.getElementById("debugBox");
 const uploadList = document.getElementById("uploadList");
 const fileSelection = document.getElementById("fileSelection");
 const fileForm = document.getElementById("fileForm");
@@ -21,7 +20,7 @@ uploadStatusTemplateRequest.onload = function () {
 uploadStatusTemplateRequest.open("GET", "/assets/html/uploadStatusTemplate.html");
 uploadStatusTemplateRequest.send();
 
-fileSelection.addEventListener("change", function (event) {
+fileSelection.addEventListener("change", function () {
     fileList = [];
     for (let i = 0; i < fileSelection.files.length; i++) {
         fileList.push(fileSelection.files[i]);
@@ -42,10 +41,9 @@ function uploadFile(file) {
 
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-
-    let request = new XMLHttpRequest();
     let url = window.location.origin + "/upload";
 
+    let request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.OPENED) {
             let uploadEntry = uploadStatusTemplate.format(file.name, "response.url", "response.deletionUrl");
@@ -91,7 +89,7 @@ function uploadFile(file) {
         progressBar.setAttribute("style", `width: ${percent}%`);
     });
 
-    request.addEventListener("error", function (ev) {
+    request.addEventListener("error", function () {
         alert(`error: ${request.responseText}`);
     });
 
