@@ -14,6 +14,7 @@ interface FileRepository : MongoRepository<File, String> {
     fun findFilesByOwnerName(owner: String): List<File>?
     fun findFilesByOwnerNameAndDeletedIsFalse(owner: String): List<File>?
     fun findFilesByOwnerNameAndDeletedIsFalse(owner: String, pageRequest: Pageable): Page<File>?
+    fun findFilesByOwnerNameAndOriginalFileNameContainsIgnoreCase(owner: String, originalFileName: String, pageRequest: Pageable): Page<File>?
     fun findFileByDeleteId(deleteId: String): File?
     fun findFileByDeleteIdAndDeletedIsFalse(deleteId: String): File?
 }

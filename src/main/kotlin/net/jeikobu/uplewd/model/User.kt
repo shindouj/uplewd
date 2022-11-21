@@ -1,10 +1,12 @@
 package net.jeikobu.uplewd.model
 
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class User constructor(
+    @Id
     @Indexed(unique = true)
     private val username: String,
     @get:JvmName("getPassword_") var password: String,
