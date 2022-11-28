@@ -69,7 +69,7 @@ function uploadFile(file) {
                 fileDUrl.setAttribute("href", `//${response.deletionUrl}`);
 
                 uploadEntryContainer.getElementsByClassName("fileLinks")[0]
-                    .setAttribute("style", "display: initial");
+                    .classList.remove("d-none");
 
                 progressBar.setAttribute("class", "progress-bar bg-success");
                 progressBar.innerHTML = "Done!";
