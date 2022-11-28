@@ -9,7 +9,7 @@ const searchButton = document.getElementById("searchButton");
 refreshTokenButton.addEventListener("click", function () {
     let token = $("meta[name='_csrf']").attr("content");
     let header = $("meta[name='_csrf_header']").attr("content");
-    let url = window.location.origin + "/userPanel/refreshToken";
+    let url = window.location.origin + "/profile/refreshToken";
 
     let request = new XMLHttpRequest();
     request.onreadystatechange = function () {
