@@ -24,9 +24,9 @@ class ProfilePageController @Autowired constructor(
     @Value("\${UPLEWD_HOST}")
     lateinit var host: String
 
-    private val templateName = "userPanel"
+    private val templateName = "profile"
 
-    @GetMapping("/userPanel")
+    @GetMapping("/profile")
     fun userPanelPage(
         authentication: Authentication,
         model: Model,
@@ -82,7 +82,7 @@ class ProfilePageController @Autowired constructor(
     }
 
     @ResponseBody
-    @PatchMapping("/userPanel/refreshToken")
+    @PatchMapping("/profile/refreshToken")
     fun refreshToken(authentication: Authentication): Map<String, String> {
         val user = authentication.principal as User
         user.token = tokenGenerator.generateToken()

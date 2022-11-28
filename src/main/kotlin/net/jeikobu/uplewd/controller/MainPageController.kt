@@ -24,4 +24,5 @@ class MainPageController {
 
         return templateName
     }
+
 }

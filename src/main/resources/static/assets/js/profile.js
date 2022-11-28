@@ -2,6 +2,7 @@ const refreshTokenButton = document.getElementById("refreshTokenButton");
 const tokenParagraph = document.getElementById("userTokenParagraph");
 const copyTokenButton = document.getElementById("copyTokenButton");
 
+const searchQueryForm = document.getElementById("searchQueryForm");
 const searchQuery = document.getElementById("searchQuery");
 const searchButton = document.getElementById("searchButton");
 
@@ -30,6 +31,11 @@ refreshTokenButton.addEventListener("click", function () {
 copyTokenButton.addEventListener("click", function () {
     navigator.clipboard.writeText(tokenParagraph.innerText);
 })
+
+searchQueryForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    searchButton.click()
+});
 
 searchButton.addEventListener("click", function () {
     let url = new URL(window.location);
