@@ -61,8 +61,7 @@ class SecurityConfig @Autowired constructor(
             csrf {
                 requireCsrfProtectionMatcher = NegatedRequestMatcher(
                     OrRequestMatcher(
-                        BearerAuthorizationMatcher(),
-                        NegatedRequestMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER)
+                        BearerAuthorizationMatcher(), NegatedRequestMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER)
                     )
                 )
             }
@@ -78,7 +77,20 @@ class SecurityConfig @Autowired constructor(
         if (u1 == null) {
             val pass = penc.encode("password")
             val user =
-                User(username = "someUser", password = pass, roles = mutableListOf(Role.ADMIN), token = "MUCH_SECURE")
+                User(username = "someUser", password = pass, roles = mutableListOf(Role.USER), token = "MUCH_SECURE")
+
+            repo.save(user)
+        }
+
+        val u2 = repo.findUserByUsername("someAdmin")
+        if (u2 == null) {
+            val pass = penc.encode("password")
+            val user = User(
+                username = "someAdmin",
+                password = pass,
+                roles = mutableListOf(Role.USER, Role.ADMIN),
+                token = "MUCH_SECURE"
+            )
 
             repo.save(user)
         }

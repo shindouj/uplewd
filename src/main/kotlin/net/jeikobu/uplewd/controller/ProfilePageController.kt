@@ -3,6 +3,7 @@ package net.jeikobu.uplewd.controller
 import net.jeikobu.uplewd.component.TokenGenerator
 import net.jeikobu.uplewd.db.FileRepository
 import net.jeikobu.uplewd.db.UserRepository
+import net.jeikobu.uplewd.model.Role
 import net.jeikobu.uplewd.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -85,6 +86,8 @@ class ProfilePageController @Autowired constructor(
             addAttribute("TOTAL_PAGES", filesPage?.totalPages);
             addAttribute("TOTAL_FILES", filesPage?.totalElements);
             addAttribute("USER_FILES", filesPage)
+
+            addAttribute("USER_IS_ADMIN", user.roles.contains(Role.ADMIN))
         }
 
         return templateName
