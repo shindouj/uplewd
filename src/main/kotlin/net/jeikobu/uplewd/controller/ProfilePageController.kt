@@ -26,9 +26,6 @@ class ProfilePageController @Autowired constructor(
     @Value("\${UPLEWD_HOST}")
     lateinit var host: String
 
-    @Value("\${UPLEWD_UI_PAGE_SIZE}")
-    lateinit var pageSize: String
-
     private val templateName = "profile"
 
     @GetMapping("/profile")

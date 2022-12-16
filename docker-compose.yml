@@ -23,7 +23,6 @@ services:
       - UPLEWD_DELETE_ID_MAX_LENGTH=64
       - UPLEWD_HOST=127.0.0.1:8080
       - UPLEWD_USER_TOKEN_MAX_LENGTH=128
-      - UPLEWD_UI_PAGE_SIZE=10
     volumes:
       - upload_volume:/upload:Z
   db:
