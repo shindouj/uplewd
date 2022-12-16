@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.util.UriComponentsBuilder
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 class ProfilePageController @Autowired constructor(
@@ -24,6 +26,9 @@ class ProfilePageController @Autowired constructor(
     @Value("\${UPLEWD_HOST}")
     lateinit var host: String
 
+    @Value("\${UPLEWD_UI_PAGE_SIZE}")
+    lateinit var pageSize: String
+
     private val templateName = "profile"
 
     @GetMapping("/profile")
@@ -32,11 +37,11 @@ class ProfilePageController @Autowired constructor(
         model: Model,
         @RequestParam("searchQuery", defaultValue = "", required = false) searchQuery: String,
         @RequestParam("page", defaultValue = "1", required = false) pageParam: Int,
-        @RequestParam("size", defaultValue = "10", required = false) sizeParam: Int
+        @RequestParam("size", defaultValue = "10", required = false) sizeParam: Int,
+        request: HttpServletRequest
     ): String {
 
         //TODO: sanitize search query?
-
         val page = if (pageParam >= 1) {
             pageParam - 1
         } else {
@@ -49,6 +54,19 @@ class ProfilePageController @Autowired constructor(
             sizeParam
         }
 
+        val uriBuilder = UriComponentsBuilder.fromUriString("")
+            .path("/$templateName")
+
+        if (page != 0) {
+            uriBuilder.queryParam("page", page + 1)
+        }
+        if (size != 10) {
+            uriBuilder.queryParam("size", size)
+        }
+        if(searchQuery.isNotEmpty()){
+            uriBuilder.queryParam("searchQuery", searchQuery)
+        }
+
         val user = authentication.principal as User
 
         val filesPage = if (searchQuery.isEmpty()) {
@@ -59,18 +77,12 @@ class ProfilePageController @Autowired constructor(
             )
         }
 
-        val basePath = if (searchQuery.isEmpty()) {
-            "/$templateName?"
-        } else {
-            "/$templateName?searchQuery=$searchQuery&"
-        }
-
         model.apply {
             addAttribute("INSTANCE_NAME", instanceName)
             addAttribute("HOST", host)
             addAttribute("USER_TOKEN", user.token)
 
-            addAttribute("BASE_PATH", basePath)
+            addAttribute("URI_BUILDER", uriBuilder)
 
             addAttribute("CURRENT_PAGE", pageParam)
             addAttribute("TOTAL_PAGES", filesPage?.totalPages);
