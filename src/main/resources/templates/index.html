@@ -23,9 +23,19 @@
         <div>
             <h3 class="float-md-start mb-0" th:text="${INSTANCE_NAME}"></h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/">Upload</a>
+                <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="/">Upload</a>
                 <a class="nav-link fw-bold py-1 px-0" href="profile">Profile</a>
-                <a th:if="${USER_IS_ADMIN}" class="nav-link fw-bold py-1 px-0" href="admin">Admin</a>
+                <div th:if="${USER_IS_ADMIN}">
+                    <a class="nav-link fw-bold py-1 px-0 dropdown-toggle active" href="#" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="admin/users">Users</a>
+                        <a class="dropdown-item" href="admin/files">Files</a>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -65,6 +75,7 @@
 </div>
 
 <script src="/assets/js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/uploader.js"></script>
 

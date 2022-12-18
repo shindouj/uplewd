@@ -7,11 +7,8 @@
     <meta name="description" content="A very wet Kotlin-based file uploader.">
     <title th:text="${INSTANCE_NAME}"></title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/custom.css" rel="stylesheet">
-    <link href="/assets/css/profile.css" rel="stylesheet">
 
     <meta name="theme-color" content="#712cf9">
 
@@ -46,34 +43,14 @@
     <main class="px-3">
         <div class="container py-4 py-lg-5">
             <div class="container h-100">
-                <div class="text-white bg-primary border rounded border-0 p-4 py-3 mb-2">
+                <div class="text-white bg-primary border rounded border-0 p-4 py-5 mb-2">
                     <div class="row h-100">
                         <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
                             <div>
-                                <h1 class="text-uppercase fw-bold text-white">YOUR FILES</h1>
+                                <h1 class="text-uppercase fw-bold text-white">Power center - Users</h1>
                                 <div class="justify-content-center">
                                     <div class="align-self-center d-flex justify-content-center align-items-center">
-                                        <p class="m-0">Token:</p>
-                                        <button id="refreshTokenButton" type="button"
-                                                class="btn btn-outline-warning btn-circle ms-4">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <button id="copyTokenButton" type="button"
-                                                class="btn btn-outline-warning btn-circle ms-1">
-                                            <i class="bi bi-clipboard"></i>
-                                        </button>
-                                    </div>
-                                    <div class="mt-2">
-                                        <p id="userTokenParagraph" class="m-0 text-break"
-                                           th:text="${USER_TOKEN}"></p>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center mt-2">
-                                        <form id="searchQueryForm" class="w-75">
-                                            <input id="searchQuery" type="text" class="form-control">
-                                        </form>
-                                        <button id="searchButton" type="button" class="btn btn-outline-dark ms-2">
-                                            <i class="bi bi-search"></i>
-                                        </button>
+                                        <p class="m-0">You're the admin Harry</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,59 +62,46 @@
                     <table class="table table-dark table-striped rounded overflow-hidden">
                         <thead>
                         <tr>
-                            <th scope="col" style="width: 25%">File name</th>
-                            <th scope="col" style="width: 60%">Original file name</th>
-                            <th scope="col" style="width: 5%">URL</th>
-                            <th scope="col" style="width: 10%">Deletion URL</th>
+                            <th scope="col" style="width: 70%">Username</th>
+                            <th scope="col" style="width: 30%">Enabled</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="file : ${USER_FILES}">
-                            <td th:text="${file.fileName}"></td>
-                            <td th:text="${file.originalFileName}"></td>
-                            <td>
-                                <a target="_blank" class="fileUrl" th:href="${file.fileName}">
-                                    <i class="bi bi-download"></i>
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a target="_blank" class="fileDUrl text-danger"
-                                   th:href="@{/delete/{deleteId}(deleteId=${{file.deleteId}})}">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
+                        <tr th:each="user : ${USERS}">
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.isEnabled()}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div>
-                    <nav aria-label="Pagination" th:if="${USER_FILES.totalPages gt 0}">
+                    <nav aria-label="Pagination" th:if="${USERS.totalPages gt 0}">
                         <ul class="pagination justify-content-center font-weight-bold">
-                            <li class="page-item" th:classappend="${USER_FILES.number eq 0} ? 'disabled'">
+                            <li class="page-item" th:classappend="${USERS.number eq 0} ? 'disabled'">
                                 <a class="page-link bg-dark border-primary"
-                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USER_FILES.number lt 2 ? 1 : USER_FILES.number).build().toUriString()}}"
+                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USERS.number lt 2 ? 1 : USERS.number).build().toUriString()}}"
                                    aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
-                            <li class="page-item" th:classappend="${i eq USER_FILES.number + 1} ? 'active'"
-                                th:each="i : ${#numbers.sequence( 1, USER_FILES.totalPages, 1)}">
+                            <li class="page-item" th:classappend="${i eq USERS.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, USERS.totalPages, 1)}">
                                 <a class="page-link bg-dark border-primary"
                                    th:href="@{${URI_BUILDER.replaceQueryParam('page', i).build().toUriString()}}"
                                    th:text="${i}"
                                    th:title="${'Page '+ i}" data-toggle="tooltip"></a>
                             </li>
                             <li class="page-item disabled"
-                                th:if="${USER_FILES.number + 10 < USER_FILES.totalPages}">
+                                th:if="${USERS.number + 10 < USERS.totalPages}">
                                 <a class="page-link svg-icon bg-dark border-primary" href="#">
                                     <span data-feather="more-horizontal" width="20" height="20"></span>
                                 </a>
                             </li>
                             <li class="page-item"
-                                th:classappend="${USER_FILES.number + 1 eq USER_FILES.totalPages} ? 'disabled'">
+                                th:classappend="${USERS.number + 1 eq USERS.totalPages} ? 'disabled'">
                                 <a class="page-link bg-dark border-primary"
-                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USER_FILES.number + 2).build().toUriString()}}"
+                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USERS.number + 2).build().toUriString()}}"
                                    aria-label="Next" title="Next Page" data-toggle="tooltip">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
@@ -147,7 +111,6 @@
                 </div>
 
             </div>
-        </div>
     </main>
 
     <footer class="mt-auto text-white-50">
@@ -158,7 +121,7 @@
 <script src="/assets/js/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/profile.js"></script>
+<script src="/assets/js/uploader.js"></script>
 
 </body>
 </html>

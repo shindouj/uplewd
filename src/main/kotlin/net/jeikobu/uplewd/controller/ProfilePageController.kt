@@ -36,7 +36,6 @@ class ProfilePageController @Autowired constructor(
         @RequestParam("searchQuery", defaultValue = "", required = false) searchQuery: String,
         @RequestParam("page", defaultValue = "1", required = false) pageParam: Int,
         @RequestParam("size", defaultValue = "10", required = false) sizeParam: Int,
-        request: HttpServletRequest
     ): String {
 
         //TODO: sanitize search query?
@@ -77,7 +76,6 @@ class ProfilePageController @Autowired constructor(
 
         model.apply {
             addAttribute("INSTANCE_NAME", instanceName)
-            addAttribute("HOST", host)
             addAttribute("USER_TOKEN", user.token)
 
             addAttribute("URI_BUILDER", uriBuilder)
