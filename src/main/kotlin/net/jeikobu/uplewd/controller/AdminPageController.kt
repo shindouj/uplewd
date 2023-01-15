@@ -47,7 +47,7 @@ class AdminPageController constructor(
         }
 
         val uriBuilder = UriComponentsBuilder.fromUriString("")
-            .path("/admin/$usersTemplateName")
+            .path("/$usersTemplateName")
 
         if (page != 0) {
             uriBuilder.queryParam("page", page + 1)
@@ -84,10 +84,63 @@ class AdminPageController constructor(
         return usersTemplateName
     }
 
-    @GetMapping
+    @GetMapping("/admin/files")
     fun adminFilesHandler(
-        authentication: Authentication, model: Model
+        authentication: Authentication,
+        model: Model,
+        @RequestParam("searchQuery", defaultValue = "", required = false) searchQuery: String,
+        @RequestParam("page", defaultValue = "1", required = false) pageParam: Int,
+        @RequestParam("size", defaultValue = "10", required = false) sizeParam: Int,
     ): String {
+        //TODO: sanitize search query?
+        val page = if (pageParam >= 1) {
+            pageParam - 1
+        } else {
+            0
+        }
+
+        val size = if (sizeParam <= 0) {
+            1
+        } else {
+            sizeParam
+        }
+
+        val uriBuilder = UriComponentsBuilder.fromUriString("")
+            .path("/$filesTemplateName")
+
+        if (page != 0) {
+            uriBuilder.queryParam("page", page + 1)
+        }
+        if (size != 10) {
+            uriBuilder.queryParam("size", size)
+        }
+        if (searchQuery.isNotEmpty()) {
+            uriBuilder.queryParam("searchQuery", searchQuery)
+        }
+
+        val user = authentication.principal as User
+
+        val filesPage = if (searchQuery.isEmpty()) {
+            fileRepository.findAll(PageRequest.of(page, size))
+        } else {
+            fileRepository.findFilesByOwnerNameContainsIgnoreCaseOrFileNameContainsIgnoreCaseOrOriginalFileNameContainsIgnoreCase(
+                searchQuery, searchQuery, searchQuery,
+                PageRequest.of(page, size)
+            )
+        }
+
+        model.apply {
+            addAttribute("INSTANCE_NAME", instanceName)
+
+            addAttribute("URI_BUILDER", uriBuilder)
+
+            addAttribute("CURRENT_PAGE", pageParam)
+            addAttribute("TOTAL_PAGES", filesPage?.totalPages);
+            addAttribute("TOTAL_USERS", filesPage?.totalElements);
+            addAttribute("FILES", filesPage)
+
+            addAttribute("USER_IS_ADMIN", user.roles.contains(Role.ADMIN))
+        }
 
         return filesTemplateName
     }

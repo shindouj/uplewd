@@ -11,7 +11,6 @@
 
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/custom.css" rel="stylesheet">
-    <link href="/assets/css/profile.css" rel="stylesheet">
 
     <meta name="theme-color" content="#712cf9">
 
@@ -27,9 +26,9 @@
             <h3 class="float-md-start mb-0" th:text="${INSTANCE_NAME}"></h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
                 <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="/">Upload</a>
-                <a class="nav-link fw-bold py-1 px-0 active" href="/profile">Profile</a>
+                <a class="nav-link fw-bold py-1 px-0" href="/profile">Profile</a>
                 <div th:if="${USER_IS_ADMIN}">
-                    <a class="nav-link fw-bold py-1 px-0 dropdown-toggle" href="#" role="button"
+                    <a class="nav-link fw-bold py-1 px-0 dropdown-toggle active" href="#" role="button"
                        data-bs-toggle="dropdown"
                        aria-expanded="false">
                         Admin
@@ -52,21 +51,6 @@
                             <div>
                                 <h1 class="text-uppercase fw-bold text-white">YOUR FILES</h1>
                                 <div class="justify-content-center">
-                                    <div class="align-self-center d-flex justify-content-center align-items-center">
-                                        <p class="m-0">Token:</p>
-                                        <button id="refreshTokenButton" type="button"
-                                                class="btn btn-outline-warning btn-circle ms-4">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <button id="copyTokenButton" type="button"
-                                                class="btn btn-outline-warning btn-circle ms-1">
-                                            <i class="bi bi-clipboard"></i>
-                                        </button>
-                                    </div>
-                                    <div class="mt-2">
-                                        <p id="userTokenParagraph" class="m-0 text-break"
-                                           th:text="${USER_TOKEN}"></p>
-                                    </div>
                                     <div class="d-flex justify-content-center align-items-center mt-2">
                                         <form id="searchQueryForm" class="w-75">
                                             <input id="searchQuery" type="text" class="form-control">
@@ -85,14 +69,16 @@
                     <table class="table table-dark table-striped rounded overflow-hidden">
                         <thead>
                         <tr>
+                            <th scope="col" style="width: 25%">Owner</th>
                             <th scope="col" style="width: 25%">File name</th>
-                            <th scope="col" style="width: 60%">Original file name</th>
+                            <th scope="col" style="width: 35%">Original file name</th>
                             <th scope="col" style="width: 5%">URL</th>
                             <th scope="col" style="width: 10%">Deletion URL</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="file : ${USER_FILES}">
+                        <tr th:each="file : ${FILES}">
+                            <td th:text="${file.ownerName}"></td>
                             <td th:text="${file.fileName}"></td>
                             <td th:text="${file.originalFileName}"></td>
                             <td>
@@ -112,32 +98,32 @@
                 </div>
 
                 <div>
-                    <nav aria-label="Pagination" th:if="${USER_FILES.totalPages gt 0}">
+                    <nav aria-label="Pagination" th:if="${FILES.totalPages gt 0}">
                         <ul class="pagination justify-content-center font-weight-bold">
-                            <li class="page-item" th:classappend="${USER_FILES.number eq 0} ? 'disabled'">
+                            <li class="page-item" th:classappend="${FILES.number eq 0} ? 'disabled'">
                                 <a class="page-link bg-dark border-primary"
-                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USER_FILES.number lt 2 ? 1 : USER_FILES.number).build().toUriString()}}"
+                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', FILES.number lt 2 ? 1 : FILES.number).build().toUriString()}}"
                                    aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
-                            <li class="page-item" th:classappend="${i eq USER_FILES.number + 1} ? 'active'"
-                                th:each="i : ${#numbers.sequence( 1, USER_FILES.totalPages, 1)}">
+                            <li class="page-item" th:classappend="${i eq FILES.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, FILES.totalPages, 1)}">
                                 <a class="page-link bg-dark border-primary"
                                    th:href="@{${URI_BUILDER.replaceQueryParam('page', i).build().toUriString()}}"
                                    th:text="${i}"
                                    th:title="${'Page '+ i}" data-toggle="tooltip"></a>
                             </li>
                             <li class="page-item disabled"
-                                th:if="${USER_FILES.number + 10 < USER_FILES.totalPages}">
+                                th:if="${FILES.number + 10 < FILES.totalPages}">
                                 <a class="page-link svg-icon bg-dark border-primary" href="#">
                                     <span data-feather="more-horizontal" width="20" height="20"></span>
                                 </a>
                             </li>
                             <li class="page-item"
-                                th:classappend="${USER_FILES.number + 1 eq USER_FILES.totalPages} ? 'disabled'">
+                                th:classappend="${FILES.number + 1 eq FILES.totalPages} ? 'disabled'">
                                 <a class="page-link bg-dark border-primary"
-                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', USER_FILES.number + 2).build().toUriString()}}"
+                                   th:href="@{${URI_BUILDER.replaceQueryParam('page', FILES.number + 2).build().toUriString()}}"
                                    aria-label="Next" title="Next Page" data-toggle="tooltip">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
@@ -158,7 +144,8 @@
 <script src="/assets/js/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/profile.js"></script>
+<script src="/assets/js/uploader.js"></script>
+<script src="/assets/js/admin/files.js"></script>
 
 </body>
 </html>
