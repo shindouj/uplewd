@@ -33,6 +33,9 @@ class UploadPageController @Autowired constructor(
     @Value("\${UPLEWD_HOST}")
     lateinit var host: String
 
+    @Value("\${UPLEWD_FILE_HOST}")
+    lateinit var fileHost: String
+
     @PostMapping("/upload")
     fun uploadHandler(authentication: Authentication, @RequestParam("file") file: MultipartFile): Map<String, String> {
         val user = authentication.principal as User
@@ -55,7 +58,7 @@ class UploadPageController @Autowired constructor(
 
         return mapOf(
             "id" to savedFileNameWithoutExtension,
-            "url" to "$host/${savedFile.fileName}",
+            "url" to "$fileHost/${savedFile.fileName}",
             "deleteId" to savedFile.deleteId,
             "deletionUrl" to "$host/delete/${savedFile.deleteId}"
         )

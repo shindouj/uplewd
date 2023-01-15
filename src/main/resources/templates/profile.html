@@ -96,7 +96,7 @@
                             <td th:text="${file.fileName}"></td>
                             <td th:text="${file.originalFileName}"></td>
                             <td>
-                                <a target="_blank" class="fileUrl" th:href="${file.fileName}">
+                                <a target="_blank" class="fileUrl" th:href="${FILE_HOST}+'/'+${file.fileName}">
                                     <i class="bi bi-download"></i>
                                 </a>
                             </td>

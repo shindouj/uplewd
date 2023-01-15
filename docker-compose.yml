@@ -21,7 +21,8 @@ services:
       - UPLEWD_STORAGE_PATH=/upload
       - UPLEWD_STORAGE_FILENAME_MAX_LENGTH=16
       - UPLEWD_DELETE_ID_MAX_LENGTH=64
-      - UPLEWD_HOST=127.0.0.1:8080
+      - UPLEWD_HOST=http://127.0.0.1:8080
+      - UPLEWD_FILE_HOST=http://1.2.3.4
       - UPLEWD_USER_TOKEN_MAX_LENGTH=128
     volumes:
       - upload_volume:/upload:Z

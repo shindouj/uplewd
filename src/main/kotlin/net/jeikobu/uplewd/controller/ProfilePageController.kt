@@ -24,8 +24,8 @@ class ProfilePageController @Autowired constructor(
     @Value("\${UPLEWD_INSTANCE_NAME}")
     lateinit var instanceName: String
 
-    @Value("\${UPLEWD_HOST}")
-    lateinit var host: String
+    @Value("\${UPLEWD_FILE_HOST}")
+    lateinit var fileHost: String
 
     private val templateName = "profile"
 
@@ -77,6 +77,7 @@ class ProfilePageController @Autowired constructor(
         model.apply {
             addAttribute("INSTANCE_NAME", instanceName)
             addAttribute("USER_TOKEN", user.token)
+            addAttribute("FILE_HOST", fileHost)
 
             addAttribute("URI_BUILDER", uriBuilder)
 
