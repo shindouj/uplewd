@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
+import java.time.Instant
 
 interface FileRepository : MongoRepository<File, String> {
 
@@ -20,6 +21,9 @@ interface FileRepository : MongoRepository<File, String> {
         pageRequest: Pageable
     ): Page<File>?
 
+    fun findFileByDeleteId(deleteId: String): File?
+    fun findFileByDeleteIdAndDeletedIsFalse(deleteId: String): File?
+
     fun findFilesByOwnerNameContainsIgnoreCaseOrFileNameContainsIgnoreCaseOrOriginalFileNameContainsIgnoreCase(
         owner: String,
         fileName: String,
@@ -27,6 +31,5 @@ interface FileRepository : MongoRepository<File, String> {
         pageRequest: Pageable
     ): Page<File>?
 
-    fun findFileByDeleteId(deleteId: String): File?
-    fun findFileByDeleteIdAndDeletedIsFalse(deleteId: String): File?
+    fun findFilesByExpirationTimeNotNullAndExpirationTimeBefore(instant: Instant): List<File>?
 }

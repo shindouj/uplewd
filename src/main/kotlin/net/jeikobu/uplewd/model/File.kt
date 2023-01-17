@@ -12,5 +12,6 @@ data class File(
     val uploadDate: Instant = Instant.now(),
     val deleteId: String,
     var deleted: Boolean = false,
+    var expirationTime: Instant? = null,
     var deletionTime: Instant? = null
 )
