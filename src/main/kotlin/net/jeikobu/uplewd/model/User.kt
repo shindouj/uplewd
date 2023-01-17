@@ -15,7 +15,8 @@ class User constructor(
     var expired: Boolean = false,
     var locked: Boolean = false,
     @Indexed
-    var token: String
+    var token: String,
+    val userSettings: UserSettings = UserSettings()
 ) : UserDetails {
     constructor() : this(
         username = "", password = "", roles = mutableListOf(),

@@ -4,6 +4,7 @@ import net.jeikobu.uplewd.component.DeleteIdGenerator
 import net.jeikobu.uplewd.db.FileRepository
 import net.jeikobu.uplewd.exception.DbEntryExistsException
 import net.jeikobu.uplewd.model.File
+import net.jeikobu.uplewd.model.RetentionPeriod
 import net.jeikobu.uplewd.model.User
 import net.jeikobu.uplewd.service.UploadFileService
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException
@@ -51,7 +52,12 @@ class UploadPageController @Autowired constructor(
                 fileName = savedFileName,
                 originalFileName = file.originalFilename ?: "",
                 ownerName = user.username,
-                deleteId = deleteIdGenerator.generateDeleteId()
+                deleteId = deleteIdGenerator.generateDeleteId(),
+                expirationTime = if (user.userSettings.retentionPeriod == RetentionPeriod.INF) {
+                    null
+                } else {
+                    Instant.now().plusSeconds(user.userSettings.retentionPeriod.seconds)
+                }
             )
         )
         Logger.debug { "Upload: $savedFileName saved to database [User: ${user.username}]" }
